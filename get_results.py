@@ -28,10 +28,10 @@ def get_results_xnli_average_iterations():
             iterations = [1, 2, 3, 4, 5]
         for iteration in iterations:
             all_accs_for_iteration = []
-            for lang in ["fr", "es", "el", "bg", "ru", "tr", "ar", "vi", "th", "zh", "hi", "sw", "ur", "de"]:
+            for lang in ["en", "fr", "es", "el", "bg", "ru", "tr", "ar", "vi", "th", "zh", "hi", "sw", "ur", "de"]:
                 try:
                     path = (
-                    "/work/anlausch/DebunkMLBERT/data/eval_xlmr_xnli_retrain_%d_k_first_%s_3e-5_1.0_%d/eval_results_test.txt" % (
+                    "/work/anlausch/DebunkMLBERT/data/eval_xlmr_xnli_retrain_%d_k_shortest_%s_3e-5_1.0_%d/eval_results_test.txt" % (
                     k, lang, iteration))
                     with open(path, "r") as f:
                         line = f.readline()
@@ -40,7 +40,7 @@ def get_results_xnli_average_iterations():
                     #print(str(k) + "\t" + "\t".join([str(acc) for acc in all_accs]))
                     #all_accs = []
                     break
-            if len(all_accs_for_iteration) == len(["fr", "es", "el", "bg", "ru", "tr", "ar", "vi", "th", "zh", "hi", "sw", "ur", "de"]):
+            if len(all_accs_for_iteration) == len(["en", "fr", "es", "el", "bg", "ru", "tr", "ar", "vi", "th", "zh", "hi", "sw", "ur", "de"]):
                 np.array(all_accs_for_iteration)
                 all_accs.append(all_accs_for_iteration)
         avg_accs = np.average(all_accs, axis=0)
@@ -60,7 +60,7 @@ def get_results_xquad_average_iterations():
         for iteration in iterations:
             all_exacts_for_iteration = []
             all_f1_for_iteration = []
-            for lang in ["zh", "vi", "tr", "th", "ru", "hi", "es", "el", "de", "ar"]:
+            for lang in ["en", "zh", "vi", "tr", "th", "ru", "hi", "es", "el", "de", "ar"]:
                 try:
                     path = ("/work/anlausch/DebunkMLBERT/data/xquad_eval_xlmr_retrain_%d_%s_2e-5_1.0_%d/eval_results.txt" % (k, lang, iteration))
                     with open(path,"r") as f:
@@ -91,7 +91,7 @@ def get_results_xquad():
     for k in [0, 2, 4, 6, 8, 10]:
         all_exacts = []
         all_f1 = []
-        for lang in ["zh", "vi", "tr", "th", "ru", "hi", "es", "el", "de", "ar"]:
+        for lang in ["en", "zh", "vi", "tr", "th", "ru", "hi", "es", "el", "de", "ar"]:
             try:
                 path = ("/work/anlausch/DebunkMLBERT/data/xquad_eval_retrain_%d_%s_3e-5_1.0_2/eval_results.txt" % (k, lang))
                 with open(path,"r") as f:
@@ -108,8 +108,8 @@ def get_results_xquad():
         print(str(k) + "\t" + "\t".join([str(score) for score in all_f1]))
 
 def main():
-    #get_results_xnli_average_iterations()
-    get_results_xquad_average_iterations()
+    get_results_xnli_average_iterations()
+    #get_results_xquad_average_iterations()
 
 if __name__=="__main__":
     main()
