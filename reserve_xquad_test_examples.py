@@ -1,6 +1,13 @@
 import json
 import os
 
+def count_paragraphs(lang="en"):
+    data_dir = "/work/anlausch/DebunkMLBERT/finetune_data/xquad"
+    train_file = ("xquad-train.%s.json" % lang)
+    with open(
+        os.path.join(data_dir, train_file), "r", encoding="utf-8"
+    ) as reader:
+        input_data = json.load(reader)
 
 def split_data(lang):
     data_dir = "/work/anlausch/DebunkMLBERT/finetune_data/xquad"
@@ -28,8 +35,9 @@ def split_data(lang):
             writer.writelines(json.dumps(test_data))
 
 def main():
-    for lang in ["en", "zh", "vi", "tr", "th", "ru", "hi", "es", "el", "de", "ar"]:
-        split_data(lang)
+    #for lang in ["en", "zh", "vi", "tr", "th", "ru", "hi", "es", "el", "de", "ar"]:
+    #    split_data(lang)
+    count_paragraphs()
 
 if __name__ == "__main__":
     main()

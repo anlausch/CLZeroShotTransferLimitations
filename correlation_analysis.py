@@ -48,6 +48,9 @@ def run_correlation_analysis(mode, task, features, model, sampling_strategy, k, 
         result = compute_correlation(task, features, model, sampling_strategy, k, similarity_strategy, aggregation_strategy)
     if mode == "sizesvsvecs":
         result = compute_correlation_sizes_against_l2v(task, features, model, similarity_strategy)
+        aggregation_strategy=""
+        k=""
+        sampling_strategy=""
 
     if result is not None:
         pearson = result[0][0]
@@ -56,18 +59,19 @@ def run_correlation_analysis(mode, task, features, model, sampling_strategy, k, 
         spearmanp = result[1][1]
         print("\t".join([aggregation_strategy, task, model, sampling_strategy, str(k), str(features), similarity_strategy, str(pearson),str(pearsonp),str(spearman),str(spearmanp)]))
     else:
-        print("\t".join(
-            [aggregation_strategy, task, model, sampling_strategy, str(k), str(features), similarity_strategy, "", "", "", ""]))
+        return
+        #print("\t".join(
+        #    [aggregation_strategy, task, model, sampling_strategy, str(k), str(features), similarity_strategy, "", "", "", ""]))
 
 if __name__ == "__main__":
     for feature in l2v.FEATURE_SETS:
         #result = run_correlation_analysis("xquad", feature, "mbert", "-", 0, "plain", "to_en")
         # for ner its RANDOM
         for task in ["xnli","xquad", "dep", "pos", "ner"]:
-            result = run_correlation_analysis(task=task, features=feature, model="mbert", similarity_strategy="to_en",
+            result = run_correlation_analysis(mode="sizesvsvecs", task=task, features=feature, model="mbert", similarity_strategy="to_en",
                                               k=None, aggregation_strategy=None, sampling_strategy=None)
             if task in ["xnli", "xquad"]:
-                result = run_correlation_analysis(task=task, features=feature, model="xlmr", similarity_strategy="to_en",
+                result = run_correlation_analysis(mode="sizesvsvecs", task=task, features=feature, model="xlmr", similarity_strategy="to_en",
                                               k=None, aggregation_strategy=None, sampling_strategy=None)
         #result = run_correlation_analysis("dep", feature, "mbert?", "LONGEST", 0, "plain", "to_en")
     #result = run_correlation_analysis("xquad", "sizes", "mbert", "k_first", 6, "plain", "-")

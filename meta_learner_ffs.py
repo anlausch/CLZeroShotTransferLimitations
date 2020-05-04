@@ -8,6 +8,7 @@ import lang2vec.lang2vec as l2v
 from sklearn import preprocessing
 from itertools import combinations, chain
 import pandas as pd
+from sklearn.metrics import mean_absolute_error
 
 def powerset(iterable):
     """
@@ -91,28 +92,32 @@ def _run_regression(task, features, model, sampling_strategy, k, similarity_stra
         all_preds = np.array(all_preds).flatten()
         all_ys = np.array(all_ys).flatten()
         avg_coeffs = np.average(np.array(coeffs), axis=0)
-        return pearsonr(all_ys, all_preds), spearmanr(all_ys, all_preds), avg_coeffs
+        return pearsonr(all_ys, all_preds), spearmanr(all_ys, all_preds), avg_coeffs, mean_absolute_error(all_preds, all_ys)
     else:
         return None
 
 
-def run_regression(task, features, model, sampling_strategy, k, aggregation_strategy, similarity_strategy):
-    result = _run_regression(task, features, model, sampling_strategy, k, similarity_strategy, aggregation_strategy)
+def output_result(result, task, features, model, sampling_strategy, k, aggregation_strategy, similarity_strategy):
     if result is not None:
         pearson = result[0][0]
         pearsonp = result[0][1]
         spearman = result[1][0]
         spearmanp = result[1][1]
         coeffs = result[2]
+        mae = result[3]
+
         if similarity_strategy == "to_en":
-            print("\t".join([aggregation_strategy, task, model, sampling_strategy, str(k), str(features), similarity_strategy, str(pearson),str(pearsonp),str(spearman),str(spearmanp), str(coeffs)]))
+            print("\t".join(
+                [aggregation_strategy, task, model, sampling_strategy, str(k), str(features), similarity_strategy,
+                 str(pearson), str(pearsonp), str(spearman), str(spearmanp), str(coeffs), str(mae)]))
         else:
             print("\t".join(
                 [aggregation_strategy, task, model, sampling_strategy, str(k), str(features), similarity_strategy,
-                 str(pearson), str(pearsonp), str(spearman), str(spearmanp)]))
-        return result
-    else:
-        return None
+                 str(pearson), str(pearsonp), str(spearman), str(spearmanp), str(mae)]))
+
+def run_regression(task, features, model, sampling_strategy, k, aggregation_strategy, similarity_strategy):
+    result = _run_regression(task, features, model, sampling_strategy, k, similarity_strategy, aggregation_strategy)
+    return result
         #print("\t".join(
         #    [aggregation_strategy, task, model, sampling_strategy, str(k), str(features), similarity_strategy, "", "", "", ""]))
 
@@ -120,10 +125,12 @@ def run_regression(task, features, model, sampling_strategy, k, aggregation_stra
 def run_regression_ffs(task, features, model, sampling_strategy, k, aggregation_strategy, similarity_strategy):
     initial_features = features
     best_features = []
+    best_result = None
     old_max_pearson = 0.0
     while (len(initial_features)>0):
         remaining_features = list(set(initial_features)-set(best_features))
         new_pearson = pd.Series(index=remaining_features)
+        results = pd.Series(index=remaining_features)
         for new_column in remaining_features:
             result = run_regression(task, best_features + [new_column],
                                                      model,
@@ -133,6 +140,7 @@ def run_regression_ffs(task, features, model, sampling_strategy, k, aggregation_
                                                      similarity_strategy)
             if result is not None:
                 new_pearson[new_column] = result[0][0]
+                results[new_column] = result
             else:
                 continue
 
@@ -140,9 +148,11 @@ def run_regression_ffs(task, features, model, sampling_strategy, k, aggregation_
         if(max_pearson > old_max_pearson):
             best_features.append(new_pearson.idxmax())
             old_max_pearson = max_pearson
+            best_result = results[new_pearson.idxmax()]
         else:
             break
     print("The best features are " + str(best_features))
+    output_result(best_result, task, features, model, sampling_strategy, k, aggregation_strategy, similarity_strategy)
     return best_features
 
 
@@ -152,8 +162,8 @@ if __name__ == "__main__":
     warnings.filterwarnings("ignore")
 
     all_features = list(l2v.FEATURE_SETS) + ["size"]
-    for similarity_strat in ["to_en", "-"]:
-        run_regression_ffs("ner", all_features, "mbert", "LONGEST", 0, "plain", similarity_strat)
+    for similarity_strat in ["to_en"]:
+        run_regression_ffs("xquad", all_features, "mbert", "k_first", 0, "plain", similarity_strat)
         #for comb in powerset(all_features):
         #    result = run_regression("xnli", comb, "xlmr", "k_first", 0, "plain", similarity_strat) #"-",
     # for ner its RANDOM

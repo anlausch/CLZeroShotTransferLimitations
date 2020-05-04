@@ -62,7 +62,7 @@ def get_results_xquad_average_iterations():
             all_f1_for_iteration = []
             for lang in ["en", "zh", "vi", "tr", "th", "ru", "hi", "es", "el", "de", "ar"]:
                 try:
-                    path = ("/work/anlausch/DebunkMLBERT/data/xquad_eval_xlmr_retrain_%d_%s_2e-5_1.0_%d/eval_results.txt" % (k, lang, iteration))
+                    path = ("/work/anlausch/DebunkMLBERT/data/xquad_eval_retrain_%d_%s_3e-5_1.0_%d/eval_results.txt" % (k, lang, iteration))
                     with open(path,"r") as f:
                         for i,line in enumerate(f.readlines()):
                             if i == 7:
@@ -108,8 +108,8 @@ def get_results_xquad():
         print(str(k) + "\t" + "\t".join([str(score) for score in all_f1]))
 
 def main():
-    get_results_xnli_average_iterations()
-    #get_results_xquad_average_iterations()
+    #get_results_xnli_average_iterations()
+    get_results_xquad_average_iterations()
 
 if __name__=="__main__":
     main()
