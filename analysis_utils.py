@@ -42,9 +42,12 @@ def load_lang2vec_vectors(task="xnli", features=[]):
     except Exception as e:
         return None
 
-def load_sheet_scores_from_experiment(strategy, k, task, path="./results_lower_level/lang-distance-results - final_", model="mbert"):
+def load_sheet_scores_from_experiment(strategy, k, task, path="./results_lower_level/lang-distance-results - ", model="mbert"):
     if task in ["pos", "ner", "dep"]:
-        path = path + task + ".tsv"
+        if model == "mbert":
+            path = path + "new_" +  task + "_BERT.tsv"
+        elif model == "xlmr":
+            path = path + task + "_XLM.tsv"
     else:
         path = path + task + "_" + model + ".tsv"
     with open(path, "r") as f:
@@ -134,7 +137,7 @@ def get_experiment_scores(task, model, sampling_strategy, k):
     if task == "xnli" or task == "xquad":
         scores = load_average_scores_from_experiment(task, model, sampling_strategy, k)
     elif task == "dep" or task == "ner" or task == "pos":
-        scores = load_sheet_scores_from_experiment(task=task, strategy=sampling_strategy, k=k)
+        scores = load_sheet_scores_from_experiment(task=task, strategy=sampling_strategy, k=k, model=model)
     return scores
 
 

@@ -163,7 +163,7 @@ if __name__ == "__main__":
 
     all_features = list(l2v.FEATURE_SETS) + ["size"]
     for similarity_strat in ["to_en"]:
-        run_regression_ffs("xquad", all_features, "mbert", "k_first", 0, "plain", similarity_strat)
+        run_regression_ffs("pos", all_features, "mbert", "RANDOM", 0, "plain", similarity_strat)
         #for comb in powerset(all_features):
         #    result = run_regression("xnli", comb, "xlmr", "k_first", 0, "plain", similarity_strat) #"-",
     # for ner its RANDOM

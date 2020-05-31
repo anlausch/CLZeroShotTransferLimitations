@@ -57,7 +57,7 @@ def run_correlation_analysis(mode, task, features, model, sampling_strategy, k, 
         pearsonp = result[0][1]
         spearman = result[1][0]
         spearmanp = result[1][1]
-        print("\t".join([aggregation_strategy, task, model, sampling_strategy, str(k), str(features), similarity_strategy, str(pearson),str(pearsonp),str(spearman),str(spearmanp)]))
+        print("\t".join([aggregation_strategy, task, model, sampling_strategy, str(k), str(features), similarity_strategy, str(pearson), str(spearman)]))
     else:
         return
         #print("\t".join(
@@ -67,12 +67,13 @@ if __name__ == "__main__":
     for feature in l2v.FEATURE_SETS:
         #result = run_correlation_analysis("xquad", feature, "mbert", "-", 0, "plain", "to_en")
         # for ner its RANDOM
-        for task in ["xnli","xquad", "dep", "pos", "ner"]:
-            result = run_correlation_analysis(mode="sizesvsvecs", task=task, features=feature, model="mbert", similarity_strategy="to_en",
-                                              k=None, aggregation_strategy=None, sampling_strategy=None)
-            if task in ["xnli", "xquad"]:
-                result = run_correlation_analysis(mode="sizesvsvecs", task=task, features=feature, model="xlmr", similarity_strategy="to_en",
-                                              k=None, aggregation_strategy=None, sampling_strategy=None)
+        #for task in ["xnli","xquad", "dep", "pos", "ner"]:
+        #    result = run_correlation_analysis(mode="sizesvsvecs", task=task, features=feature, model="mbert", similarity_strategy="to_en",
+        #                                      k=None, aggregation_strategy=None, sampling_strategy=None)
+        #    if task in ["xnli", "xquad"]: , "dep", "pos", "ner"
+        for task in ["pos"]:
+            result = run_correlation_analysis(mode="normal", task=task, features=feature, model="mbert", similarity_strategy="to_en",
+                                              k=0, aggregation_strategy="plain", sampling_strategy="RANDOM")
         #result = run_correlation_analysis("dep", feature, "mbert?", "LONGEST", 0, "plain", "to_en")
     #result = run_correlation_analysis("xquad", "sizes", "mbert", "k_first", 6, "plain", "-")
     #result = run_correlation_analysis("ner", "sizes", "mbert", "RANDOM", 0, "plain", "-")
