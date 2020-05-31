@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 export CUDA_VISIBLE_DEVICES=1;
-export SQUAD_DIR=/work/anlausch/DebunkMLBERT/finetune_data/xquad/;
+export SQUAD_DIR=./finetune_data/xquad/;
 
 
 max_sequence_length=384

@@ -33,8 +33,8 @@ class XNLIDataReader(object):
 
 
 def write_train_and_test_portion():
-    output_folder = "/work/anlausch/DebunkMLBERT/finetune_data/XNLI/XNLI-1.0-new"
-    reader = XNLIDataReader("/work/anlausch/DebunkMLBERT/finetune_data/XNLI/XNLI-1.0-original")
+    output_folder = "./finetune_data/XNLI/XNLI-1.0-new"
+    reader = XNLIDataReader("./finetune_data/XNLI/XNLI-1.0-original")
     filename = "xnli.dev.tsv"
     all_train_portions = []
     all_test_portions = []

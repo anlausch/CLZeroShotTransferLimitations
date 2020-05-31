@@ -100,11 +100,11 @@ def load_average_scores_from_experiment(task="xnli", model="xlmr", sampling_stra
                 elif task == "xquad":
                     if model == "xlmr":
                         path = (
-                        "/work/anlausch/DebunkMLBERT/data/xquad_eval_xlmr_retrain_%d_%s_2e-5_1.0_%d/eval_results.txt" % (
+                        "./data/xquad_eval_xlmr_retrain_%d_%s_2e-5_1.0_%d/eval_results.txt" % (
                             k, lang, iteration))
                     else:
                         path = (
-                        "/work/anlausch/DebunkMLBERT/data/xquad_eval_retrain_%d_%s_3e-5_1.0_%d/eval_results.txt" % (
+                        "./data/xquad_eval_retrain_%d_%s_3e-5_1.0_%d/eval_results.txt" % (
                         k, lang, iteration))
 
                     with open(path,"r") as f:

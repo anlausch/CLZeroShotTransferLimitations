@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 export CUDA_VISIBLE_DEVICES=2;
-export XNLI_DIR=/work/anlausch/DebunkMLBERT/finetune_data/XNLI/;
+export XNLI_DIR=./finetune_data/XNLI/;
 
 
 max_sequence_length=128
