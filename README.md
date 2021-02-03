@@ -3,6 +3,14 @@
 This repository contains the code for the experiments related to higher-level semantic tasks and related to the meta-learning from: "From Zero to Hero: On the Limitations of Zero Shot Cross-Lingual Transfer".
 In case of any questions, please reach out to me. The corresponding publication can be found here: https://www.aclweb.org/anthology/2020.emnlp-main.363/ .
 
+- analysis_utils.py contains utils used in our correlation and meta-learning analysis, e.g., corpus sizes
+- correlation_analysis.py contains the code related to the correlation analysis
+- meta_learner_ffs.py contains the code for the SVR meta-learner with feed-forward feature selection
+- run_xquad.py running xquad with mbert
+- run_xquad_xmlr.py running xquad with xlm-r
+- run_xnli.py running xnli with mbert
+- run_xnli_xlmr.py running xnli with xlm-r
+
 ```
 @inproceedings{lauscher-etal-2020-zero,
     title = "From Zero to Hero: {O}n the Limitations of Zero-Shot Language Transfer with Multilingual {T}ransformers",
